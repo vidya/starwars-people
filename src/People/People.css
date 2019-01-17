@@ -1,0 +1,36 @@
+
+#people-div {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  align-items: center;
+}
+
+#page-num {
+  flex: 1
+}
+
+#people-list {
+  flex: 1
+}
+
+#nav-div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#previous-form {
+  flex: 1;
+  margin: 15px;
+  /*justify-self: flex-start;*/
+}
+
+#next-form {
+  flex: 1;
+  margin: 15px;
+  /*justify-self: flex-end;*/
+}
+
