@@ -6,10 +6,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {/*<header className="App-header">*/}
-                  {/**/}
-        {/*</header>*/}
-        <h1>Star Wars </h1>
+        <h1>People in Star Wars </h1>
         <People />
       </div>
     );

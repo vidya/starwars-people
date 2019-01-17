@@ -37,8 +37,6 @@ class People extends React.Component {
     }
 
     componentDidMount() {
-        console.log('..--> componentDidMount()')
-
         this.fetchPeople((data) => {
             const pageCount = data['count']
             this.setState({pageCount: pageCount})
@@ -49,7 +47,6 @@ class People extends React.Component {
 
     updatePeopleList = (data) => {
         const people = data['results']
-        console.log(`updatePeopleList: cb(): people length: ${people.length}`)
 
         const names = people.map((p) => p.name)
 
@@ -58,16 +55,18 @@ class People extends React.Component {
 
     handlePageChange = (event) => {
         const btnText = event.target.innerText
-        console.log(`handlePageChange: ${event.target.innerText}`)
-        console.log(`handlePageChange: ${event.target.id}`)
 
         let { pageCount, pageNum } = this.state
 
         if (btnText == 'Previous') {
-            if (pageNum > 1) { pageNum -= 1}
+            if (pageNum > 1) {
+                pageNum -= 1
+            }
         }
         else {
-            if ((10 * pageNum) < pageCount) { pageNum += 1 }
+            if ((10 * pageNum) < pageCount) {
+                pageNum += 1
+            }
         }
 
         this.setState({pageNum}, () => {

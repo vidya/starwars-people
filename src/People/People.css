@@ -25,12 +25,10 @@
 #previous-form {
   flex: 1;
   margin: 15px;
-  /*justify-self: flex-start;*/
 }
 
 #next-form {
   flex: 1;
   margin: 15px;
-  /*justify-self: flex-end;*/
 }
 
