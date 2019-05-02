@@ -8,30 +8,29 @@ import { ListGroup, ListGroupItem } from 'reactstrap';
 class People extends React.Component {
     constructor(props) {
         super(props)
+        this.pageURL = 'https://swapi.co/api/people/'
 
         this.state = {
-            pageURL: 'https://swapi.co/api/people/',
-
             pageCount: null,
             pageNum: 1,
 
             names: [],
         }
 
-        this.handlePageChange = this.handlePageChange.bind(this);
-        this.updatePeopleList = this.updatePeopleList.bind(this);
+        // this.handlePageChange = this.handlePageChange.bind(this);
+        // this.updatePeopleList = this.updatePeopleList.bind(this);
     }
 
     async fetchPeople(cb) {
         const { pageNum } = this.state
-        const peopleUrl = `https://swapi.co/api/people/?page=${pageNum}`
+        const peopleUrl = `${this.pageURL}?page=${pageNum}`
         const response = await fetch(peopleUrl);
 
         const myJson = await response.json();
 
-        this.setState({
-            dataStr: myJson,
-        })
+        // this.setState({
+        //     dataStr: myJson,
+        // })
 
         cb(myJson)
     }
@@ -39,19 +38,30 @@ class People extends React.Component {
     componentDidMount() {
         this.fetchPeople((data) => {
             const pageCount = data['count']
-            this.setState({pageCount: pageCount})
+            // this.setState({pageCount: pageCount})
+            this.setState({pageCount})
 
             this.updatePeopleList(data)
         })
     }
 
-    updatePeopleList = (data) => {
-        const people = data['results']
+    updatePeopleList = ({results: people}) => {
+        // const people = data['results']
 
-        const names = people.map((p) => p.name)
+        const names = people.map(p => p.name)
 
         this.setState({names})
     }
+
+    // updatePeopleList = (data) => {
+    //     const people = data['results']
+    //
+    //     const names = people.map(p => p.name)
+    //
+    //     this.setState({names})
+    // }
+    //
+
 
     handlePageChange = (event) => {
         const btnText = event.target.innerText
