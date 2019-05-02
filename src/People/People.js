@@ -16,9 +16,6 @@ class People extends React.Component {
 
             names: [],
         }
-
-        // this.handlePageChange = this.handlePageChange.bind(this);
-        // this.updatePeopleList = this.updatePeopleList.bind(this);
     }
 
     async fetchPeople(cb) {
@@ -28,17 +25,12 @@ class People extends React.Component {
 
         const myJson = await response.json();
 
-        // this.setState({
-        //     dataStr: myJson,
-        // })
-
         cb(myJson)
     }
 
     componentDidMount() {
         this.fetchPeople((data) => {
             const pageCount = data['count']
-            // this.setState({pageCount: pageCount})
             this.setState({pageCount})
 
             this.updatePeopleList(data)
@@ -46,22 +38,10 @@ class People extends React.Component {
     }
 
     updatePeopleList = ({results: people}) => {
-        // const people = data['results']
-
         const names = people.map(p => p.name)
 
         this.setState({names})
     }
-
-    // updatePeopleList = (data) => {
-    //     const people = data['results']
-    //
-    //     const names = people.map(p => p.name)
-    //
-    //     this.setState({names})
-    // }
-    //
-
 
     handlePageChange = (event) => {
         const btnText = event.target.innerText
