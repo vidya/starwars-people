@@ -22,12 +22,12 @@
   justify-content: space-between;
 }
 
-#previous-id {
+#previous-btn {
   flex: 1;
   margin: 15px;
 }
 
-#next-id {
+#next-btn {
   flex: 1;
   margin: 15px;
 }

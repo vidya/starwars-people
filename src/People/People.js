@@ -1,37 +1,22 @@
 import React from 'react';
 
-import './People.css';
+import { Button, ListGroup, ListGroupItem } from 'reactstrap';
+import Form from "reactstrap/es/Form";
 
-import { Button } from 'reactstrap';
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import './People.css';
 
 const PageNum = (props) => <h2 id={'page-num'}> {`Page ${props.pageNum}`} </h2>
 
-const BtnForm = (props) => (
-    <div id={'nav-div'}>
-            <form>
-                <Button id="prev-id"
-                        data-btn={'prev-page-btn'}
-                        margin={'20px'} color="primary"
-
-                        onClick={props.handlePageChange}
-                >
-                    Previous
-                </Button>
-
-                <Button id="next-id"
-                        data-btn={'next-page-btn'}
-                        margin={'120px'} color="primary"
-
-                        onClick={props.handlePageChange}
-                >
-                    Next
-                </Button>
-
-            </form>
-    </div>
+const NavButton = (props) => (
+    <Button
+        id={props.id}
+        data-btn={`${props.btnId}`}
+        margin={'20px'} color="primary"
+        onClick={props.handlePageChange}
+    >
+        {props.title}
+    </Button>
 )
-
 
 class People extends React.Component {
     constructor(props) {
@@ -72,10 +57,10 @@ class People extends React.Component {
     }
 
     handlePageChange = (event) => {
+        const btnId = event.currentTarget.dataset.btn
         let { pageCount, pageNum } = this.state
 
-        const btnId = event.currentTarget.dataset.btn
-        if (btnId == 'prev-page-btn') {
+        if (btnId === 'previous') {
             if (pageNum > 1) {
                 pageNum -= 1
             }
@@ -110,7 +95,21 @@ class People extends React.Component {
                     {nameItems}
                 </ListGroup>
 
-                <BtnForm handlePageChange={this.handlePageChange} />
+                <Form>
+                    <NavButton
+                        id={'previous-btn'}
+                        btnId={'previous'}
+                        title={'Previous'}
+                        handlePageChange={this.handlePageChange}
+                    />
+
+                    <NavButton
+                        id={'next-btn'}
+                        btnId={'next'}
+                        title={'Next'}
+                        handlePageChange={this.handlePageChange}
+                    />
+                </Form>
             </div>
         )
     }
