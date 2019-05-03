@@ -5,6 +5,34 @@ import './People.css';
 import { Button } from 'reactstrap';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
+const PageNum = (props) => <h2 id={'page-num'}> {`Page ${props.pageNum}`} </h2>
+
+const BtnForm = (props) => (
+    <div id={'nav-div'}>
+            <form>
+                <Button id="prev-id"
+                        data-btn={'prev-page-btn'}
+                        margin={'20px'} color="primary"
+
+                        onClick={props.handlePageChange}
+                >
+                    Previous
+                </Button>
+
+                <Button id="next-id"
+                        data-btn={'next-page-btn'}
+                        margin={'120px'} color="primary"
+
+                        onClick={props.handlePageChange}
+                >
+                    Next
+                </Button>
+
+            </form>
+    </div>
+)
+
+
 class People extends React.Component {
     constructor(props) {
         super(props)
@@ -44,11 +72,10 @@ class People extends React.Component {
     }
 
     handlePageChange = (event) => {
-        const btnText = event.target.innerText
-
         let { pageCount, pageNum } = this.state
 
-        if (btnText == 'Previous') {
+        const btnId = event.currentTarget.dataset.btn
+        if (btnId == 'prev-page-btn') {
             if (pageNum > 1) {
                 pageNum -= 1
             }
@@ -77,21 +104,13 @@ class People extends React.Component {
 
         return (
             <div id={'people-div'}>
-                <h2 id={'page-num'}> {`Page ${pageNum}`} </h2>
+                <PageNum pageNum={pageNum} />
 
                 <ListGroup id={'people-list'} align={'left'}>
                     {nameItems}
                 </ListGroup>
 
-                <div id={'nav-div'}>
-                    <form id={'previous-form'} onSubmit={this.handlePageChange}>
-                        <Button id="prev-id" data-btn={'prev-page-btn'} margin={'20px'} color="primary">Previous</Button>
-                    </form>
-
-                    <form id={'next-form'} onSubmit={this.handlePageChange}>
-                        <Button id="next-id" data-btn={'next-page-btn'} margin={'20px'} color="primary">Next</Button>
-                    </form>
-                </div>
+                <BtnForm handlePageChange={this.handlePageChange} />
             </div>
         )
     }
