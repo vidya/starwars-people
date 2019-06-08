@@ -27,7 +27,7 @@ class People extends React.Component {
         this.pageSize = 10
 
         this.state = {
-            pageCount: null,
+            peopleCount: null,
             pageNum: 1,
             maxPageNum: null,
 
@@ -47,8 +47,9 @@ class People extends React.Component {
 
     componentDidMount() {
         this.fetchPeople((data) => {
-            const pageCount = data['count']
-            this.setState({pageCount})
+            const peopleCount = data['count']
+            const maxPageNum = Math.ceil(peopleCount / this.pageSize)
+            this.setState({peopleCount, maxPageNum})
 
             this.updatePeopleList(data)
         })
@@ -62,8 +63,8 @@ class People extends React.Component {
 
     handlePageChange = (event) => {
         const btnId = event.currentTarget.dataset.btn
-        // let { peopleCount: pageCount, pageNum } = this.state
-        let { pageCount, pageNum } = this.state
+        // let { peopleCount: peopleCount, pageNum } = this.state
+        let { peopleCount, pageNum } = this.state
 
         if (btnId === 'previous') {
             if (pageNum > 1) {
@@ -71,7 +72,7 @@ class People extends React.Component {
             }
         }
         else {
-            if ((10 * pageNum) < pageCount) {
+            if ((10 * pageNum) < peopleCount) {
                 pageNum += 1
             }
         }
@@ -86,7 +87,7 @@ class People extends React.Component {
     }
 
     render() {
-        const { pageNum, names } = this.state
+        const { pageNum, maxPageNum, names } = this.state
         const nameItems = names.map((n, index) =>
             <ListGroupItem key={index.toString()}> {n} </ListGroupItem>
         )
@@ -114,7 +115,8 @@ class People extends React.Component {
                         btnId={'next'}
                         title={'Next'}
 
-                        disabled={names.length < this.pageSize}
+                        // disabled={names.length < this.pageSize}
+                        disabled={pageNum === maxPageNum}
                         handlePageChange={this.handlePageChange}
                     />
                 </Form>
