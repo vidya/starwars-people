@@ -42,20 +42,21 @@ class People extends React.Component {
         const response = await fetch(peopleUrl);
         const myJson = await response.json();
 
-        cb(myJson)
+        const { count, results: people } = myJson
+        cb(count, people)
     }
 
     componentDidMount() {
-        this.fetchPeople((data) => {
-            const peopleCount = data['count']
+        this.fetchPeople((count, people) => {
+            const peopleCount = count
             const maxPageNum = Math.ceil(peopleCount / this.pageSize)
             this.setState({peopleCount, maxPageNum})
 
-            this.updatePeopleList(data)
+            this.updatePeopleList(people)
         })
     }
 
-    updatePeopleList = ({results: people}) => {
+    updatePeopleList = (people) => {
         const names = people.map(p => p.name)       
         this.setState({names})
     }
@@ -76,8 +77,8 @@ class People extends React.Component {
         }
 
         this.setState({pageNum}, () => {
-            this.fetchPeople((data) => {
-                this.updatePeopleList(data)
+            this.fetchPeople((count, people) => {
+                this.updatePeopleList(people)
             })
         })
 
