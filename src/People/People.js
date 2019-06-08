@@ -42,26 +42,24 @@ class People extends React.Component {
         const response = await fetch(peopleUrl);
         const myJson = await response.json();
 
-        const { count, results: people } = myJson
-        cb(count, people)
+        const { count: peopleCount, results: people } = myJson
+
+        const maxPageNum = Math.ceil(peopleCount / this.pageSize)
+        this.setState({peopleCount, maxPageNum})
+
+        cb(people)
     }
 
     componentDidMount() {
-        this.fetchPeople((count, people) => {
-            const peopleCount = count
-            const maxPageNum = Math.ceil(peopleCount / this.pageSize)
-            this.setState({peopleCount, maxPageNum})
-
-            this.updatePeopleList(people)
-        })
+        this.fetchPeople(this.updatePeopleList)
     }
 
-    updatePeopleList = (people) => {
+    updatePeopleList = people => {
         const names = people.map(p => p.name)       
         this.setState({names})
     }
 
-    handlePageChange = (event) => {
+    handlePageChange = event => {
         const btnId = event.currentTarget.dataset.btn
         let { peopleCount, pageNum } = this.state
 
@@ -77,9 +75,7 @@ class People extends React.Component {
         }
 
         this.setState({pageNum}, () => {
-            this.fetchPeople((count, people) => {
-                this.updatePeopleList(people)
-            })
+            this.fetchPeople(this.updatePeopleList)
         })
 
         event.preventDefault();
