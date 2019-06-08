@@ -27,7 +27,9 @@ class People extends React.Component {
         this.pageSize = 10
 
         this.state = {
-            peopleCount: null,
+            nextPageURL: null,
+            previousPageURL: null,
+            
             pageNum: 1,
             maxPageNum: null,
 
@@ -35,23 +37,25 @@ class People extends React.Component {
         }
     }
 
-    async fetchPeople(cb) {
-        const { pageNum } = this.state
-
-        const peopleUrl = `${this.pageURL}?page=${pageNum}`
-        const response = await fetch(peopleUrl);
+    async fetchPeople(url, cb) {
+        const response = await fetch(url);
         const myJson = await response.json();
 
-        const { count: peopleCount, results: people } = myJson
+        const { next: nextPageURL, previous: previousPageURL } = myJson
+        this.setState({ nextPageURL, previousPageURL})
 
-        const maxPageNum = Math.ceil(peopleCount / this.pageSize)
-        this.setState({peopleCount, maxPageNum})
-
-        cb(people)
+        cb(myJson)
     }
 
     componentDidMount() {
-        this.fetchPeople(this.updatePeopleList)
+        this.fetchPeople(this.pageURL, myJson => {
+            const { count: peopleCount, results: people } = myJson
+
+            const maxPageNum = Math.ceil(peopleCount / this.pageSize)
+            this.setState({ maxPageNum })
+
+            this.updatePeopleList(people)
+        })
     }
 
     updatePeopleList = people => {
@@ -61,21 +65,19 @@ class People extends React.Component {
 
     handlePageChange = event => {
         const btnId = event.currentTarget.dataset.btn
-        let { peopleCount, pageNum } = this.state
+        const { maxPageNum, nextPageURL, previousPageURL } = this.state
+        let { pageNum } = this.state
 
-        if (btnId === 'previous') {
-            if (pageNum > 1) {
-                pageNum -= 1
-            }
+        if ((btnId === 'previous') && (pageNum > 1)){
+            pageNum -= 1
         }
-        else {
-            if ((10 * pageNum) < peopleCount) {
-                pageNum += 1
-            }
+        else if ((btnId === 'next') && (pageNum < maxPageNum)){
+            pageNum += 1
         }
 
+        const pageURL = (btnId === 'previous') ? previousPageURL : nextPageURL
         this.setState({pageNum}, () => {
-            this.fetchPeople(this.updatePeopleList)
+            this.fetchPeople(pageURL, ({results: people }) => this.updatePeopleList(people))
         })
 
         event.preventDefault();
