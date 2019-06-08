@@ -56,14 +56,12 @@ class People extends React.Component {
     }
 
     updatePeopleList = ({results: people}) => {
-        const names = people.map(p => p.name)
-             
+        const names = people.map(p => p.name)       
         this.setState({names})
     }
 
     handlePageChange = (event) => {
         const btnId = event.currentTarget.dataset.btn
-        // let { peopleCount: peopleCount, pageNum } = this.state
         let { peopleCount, pageNum } = this.state
 
         if (btnId === 'previous') {
@@ -115,7 +113,6 @@ class People extends React.Component {
                         btnId={'next'}
                         title={'Next'}
 
-                        // disabled={names.length < this.pageSize}
                         disabled={pageNum === maxPageNum}
                         handlePageChange={this.handlePageChange}
                     />
