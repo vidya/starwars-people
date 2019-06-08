@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Button, ListGroup, ListGroupItem } from 'reactstrap';
 import Form from "reactstrap/es/Form";
 
@@ -30,6 +29,7 @@ class People extends React.Component {
         this.state = {
             pageCount: null,
             pageNum: 1,
+            maxPageNum: null,
 
             names: [],
         }
@@ -62,6 +62,7 @@ class People extends React.Component {
 
     handlePageChange = (event) => {
         const btnId = event.currentTarget.dataset.btn
+        // let { peopleCount: pageCount, pageNum } = this.state
         let { pageCount, pageNum } = this.state
 
         if (btnId === 'previous') {
@@ -86,11 +87,6 @@ class People extends React.Component {
 
     render() {
         const { pageNum, names } = this.state
-
-        const maxPagenum = Math.ceil(names.length / this.pageSize)
-        const prevDisabled = (pageNum === 1)
-        const nextDisabled = (names.length < this.pageSize)
-
         const nameItems = names.map((n, index) =>
             <ListGroupItem key={index.toString()}> {n} </ListGroupItem>
         )
@@ -109,7 +105,7 @@ class People extends React.Component {
                         btnId={'previous'}
                         title={'Previous'}
 
-                        disabled={prevDisabled}
+                        disabled={pageNum === 1}
                         handlePageChange={this.handlePageChange}
                     />
 
@@ -118,7 +114,7 @@ class People extends React.Component {
                         btnId={'next'}
                         title={'Next'}
 
-                        disabled={nextDisabled}
+                        disabled={names.length < this.pageSize}
                         handlePageChange={this.handlePageChange}
                     />
                 </Form>
